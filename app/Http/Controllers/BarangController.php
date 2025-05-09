@@ -22,45 +22,43 @@ class BarangController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-
-        {
-            $distributors = Distributor::all();
-            $kategoris = Kategori::all();
-            return view('barang.create', compact('distributors', 'kategoris'));
-        }
-
+    {
+        $distributors = Distributor::all();
+        $kategoris = Kategori::all();
+        return view('barang.create', compact('distributors', 'kategoris'));
+    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'kode_barang' => 'required|unique:barangs,kode_barang',
-            'nama' => 'required',
-            'barcode' => 'nullable',
-            'harga_modal' => 'required|numeric',
-            'harga_jual' => 'required|numeric',
-            'stok' => 'required|integer',
-            'satuan' => 'required',
+        $validated = $request->validate([
+            'kode_barang'    => 'required|unique:barangs,kode_barang',
+            'nama'           => 'required',
+            'barcode'        => 'nullable',
+            'harga_modal'    => 'required|numeric',
+            'harga_jual'     => 'required|numeric',
+            'stok'           => 'required|integer',
+            'satuan'         => 'required',
             'id_distributor' => 'nullable|exists:distributors,id',
-            'kategori_id' => 'nullable|exists:kategoris,id',
-            'keterangan' => 'nullable',
-            'expired_at' => 'nullable|date',
+            'kategori_id'    => 'nullable|exists:kategoris,id',
+            'keterangan'     => 'nullable',
+            'expired_at'     => 'nullable|date',
         ]);
 
-        Barang::create($request->all());
+        Barang::create($validated);
 
         return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan.');
     }
-
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $barang = Barang::with('distributor', 'kategori')->findOrFail($id);
+        return view('barang.show', compact('barang'));
     }
 
     /**
@@ -71,6 +69,7 @@ class BarangController extends Controller
         $barang = Barang::findOrFail($id);
         $distributors = Distributor::all();
         $kategoris = Kategori::all();
+
         return view('barang.edit', compact('barang', 'distributors', 'kategoris'));
     }
 
@@ -81,18 +80,23 @@ class BarangController extends Controller
     {
         $barang = Barang::findOrFail($id);
 
-    $request->validate([
-        'kode_barang' => 'required|unique:barangs,kode_barang,' . $barang->id,
-        'nama' => 'required',
-        'harga_modal' => 'required|numeric',
-        'harga_jual' => 'required|numeric',
-        'stok' => 'required|integer',
-        'satuan' => 'required',
-    ]);
+        $validated = $request->validate([
+            'kode_barang'    => 'required|unique:barangs,kode_barang,' . $barang->id,
+            'nama'           => 'required',
+            'barcode'        => 'nullable',
+            'harga_modal'    => 'required|numeric',
+            'harga_jual'     => 'required|numeric',
+            'stok'           => 'required|integer',
+            'satuan'         => 'required',
+            'id_distributor' => 'nullable|exists:distributors,id',
+            'kategori_id'    => 'nullable|exists:kategoris,id',
+            'keterangan'     => 'nullable',
+            'expired_at'     => 'nullable|date',
+        ]);
 
-    $barang->update($request->all());
+        $barang->update($validated);
 
-    return redirect()->route('barang.index')->with('success', 'Barang berhasil diperbarui.');
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil diperbarui.');
     }
 
     /**
@@ -100,7 +104,6 @@ class BarangController extends Controller
      */
     public function destroy(string $id)
     {
-
         $barang = Barang::findOrFail($id);
         $barang->delete();
 

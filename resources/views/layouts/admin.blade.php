@@ -22,6 +22,9 @@
                         <a class="nav-link" href="{{ route('barang.index') }}">Barang</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('distributor.index') }}">distributor</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('kategori.index') }}">Kategori</a>
                     </li>
                 </ul>

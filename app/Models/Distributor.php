@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Distributor extends Model
 {
-    protected $fillable = ['nama', 'alamat', 'telepon'];
+    protected $fillable = ['nama', 'alamat', 'telepon', 'email'];
 
     public function barangs()
     {

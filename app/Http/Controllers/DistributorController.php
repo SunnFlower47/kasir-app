@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Distributor;
@@ -20,48 +19,41 @@ class DistributorController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
+            'alamat' => 'nullable|string|max:255',
+            'telepon' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
         ]);
 
-        Distributor::create([
-            'nama' => $request->nama,
-        ]);
+        Distributor::create($validated);
 
-        return redirect()->route('distributor.index')->with('success', 'Distributor berhasil ditambahkan!');
+        return redirect()->route('distributor.index')->with('success', 'Distributor berhasil ditambahkan.');
     }
 
-    public function show($id)
+    public function edit(Distributor $distributor)
     {
-        $distributor = Distributor::findOrFail($id);
-        return view('distributor.show', compact('distributor'));
-    }
-
-    public function edit($id)
-    {
-        $distributor = Distributor::findOrFail($id);
         return view('distributor.edit', compact('distributor'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Distributor $distributor)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
+            'alamat' => 'nullable|string|max:255',
+            'telepon' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
         ]);
 
-        $distributor = Distributor::findOrFail($id);
-        $distributor->update([
-            'nama' => $request->nama,
-        ]);
+        $distributor->update($validated);
 
-        return redirect()->route('distributor.index')->with('success', 'Distributor berhasil diperbarui!');
+        return redirect()->route('distributor.index')->with('success', 'Distributor berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    public function destroy(Distributor $distributor)
     {
-        $distributor = Distributor::findOrFail($id);
         $distributor->delete();
 
-        return redirect()->route('distributor.index')->with('success', 'Distributor berhasil dihapus!');
+        return redirect()->route('distributor.index')->with('success', 'Distributor berhasil dihapus.');
     }
 }

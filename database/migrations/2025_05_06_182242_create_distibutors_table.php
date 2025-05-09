@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('distributors', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('alamat')->nullable();
-            $table->string('telepon')->nullable();
+            $table->string('alamat')->default('Tidak Ada Alamat');
+            $table->string('telepon')->default('Tidak Ada Telepon');
+            $table->string('email')->default("Tidak Ada Email");
             $table->timestamps();
         });
 
