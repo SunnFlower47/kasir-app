@@ -6,17 +6,56 @@ use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Distributor;
 use App\Models\Kategori;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\BarangExport;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 
 class BarangController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $barangs = Barang::with('distributor', 'kategori')->get();
-        return view('barang.index', compact('barangs'));
+    public function index(Request $request)
+{
+    $query = Barang::with(['kategori', 'distributor']);
+
+    // Handle search
+    if ($request->has('search') && $request->search != '') {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('nama', 'like', "%{$search}%")
+              ->orWhere('kode_barang', 'like', "%{$search}%")
+              ->orWhere('barcode', 'like', "%{$search}%");
+        });
     }
+
+    // Handle filter stok dan expired
+    if ($request->has('filter')) {
+    switch ($request->filter) {
+        case 'stok_rendah':
+            $query->where('stok', '<', 10);
+            break;
+
+        case 'akan_expired':
+            $query->whereNotNull('expired_at')
+                 ->whereDate('expired_at', '>', now()) // Not expired yet
+                 ->whereDate('expired_at', '<=', now()->addDays(30)); // Within 30 days
+            break;
+
+        case 'sudah_expired':
+            $query->whereNotNull('expired_at')
+                 ->whereDate('expired_at', '<', now()); // Already expired
+            break;
+    }
+}
+    $barangs = $query->orderBy('nama')->paginate(9);
+
+    return view('barang.index', compact('barangs'));
+}
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -109,4 +148,40 @@ class BarangController extends Controller
 
         return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus.');
     }
+public function export($format)
+{
+    $search = request()->get('search');
+    $date = now()->format('Y-m-d');
+    $filename = "data-barang-{$date}.{$format}";
+
+    switch ($format) {
+        case 'xlsx':
+            return Excel::download(new BarangExport($search), $filename);
+
+        case 'csv':
+            return Excel::download(new BarangExport($search), $filename, \Maatwebsite\Excel\Excel::CSV);
+
+        case 'pdf':
+            $data = Barang::with(['kategori', 'distributor'])
+                ->when($search, function($query) use ($search) {
+                    $query->where('nama', 'like', '%'.$search.'%')
+                          ->orWhere('kode_barang', 'like', '%'.$search.'%')
+                          ->orWhere('barcode', 'like', '%'.$search.'%');
+                })
+                ->orderBy('kode_barang', 'asc')
+                ->get();
+
+            $pdf = Pdf::loadView('exports.barang-pdf', [
+                'barang' => $data,
+                'title' => 'Laporan Data Barang',
+                'date' => $date,
+                'search' => $search
+            ])->setPaper('a4', 'landscape');
+
+            return $pdf->download($filename);
+
+        default:
+            abort(404, 'Format export tidak valid');
+    }
+}
 }

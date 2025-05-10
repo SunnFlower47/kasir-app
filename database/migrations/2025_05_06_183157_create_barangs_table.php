@@ -23,7 +23,7 @@ return new class extends Migration
         $table->unsignedBigInteger('id_distributor')->nullable();
         $table->unsignedBigInteger('kategori_id')->nullable();
         $table->text('keterangan')->nullable();
-        $table->date('expired_at')->nullable();
+        $table->dateTime('expired_at')->nullable();
         $table->timestamps();
 
         // Relasi ke distributors dan kategoris
