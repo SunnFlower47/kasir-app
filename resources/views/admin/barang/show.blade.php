@@ -6,18 +6,12 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Detail Barang</h1>
-        <a href="{{ route('barang.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+        <a href="{{ route('admin.barang.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
             <i class="fas fa-arrow-left fa-sm text-white-50"></i> Kembali ke Daftar Barang
         </a>
     </div>
 
     <div class="card shadow mb-4">
-        <div class="card-header py-3 bg-primary">
-            <h6 class="m-0 font-weight-bold text-white">
-                <i class="fas fa-box"></i> {{ $barang->nama }}
-                <span class="badge badge-light ml-2">{{ $barang->kode_barang }}</span>
-            </h6>
-        </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -112,10 +106,10 @@
             <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('barang.edit', $barang->id) }}" class="btn btn-warning">
+                        <a href="{{ route('admin.barang.edit', $barang->id) }}" class="btn btn-warning">
                             <i class="fas fa-edit"></i> Edit Barang
                         </a>
-                        <form action="{{ route('barang.destroy', $barang->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus barang ini?')">
+                        <form action="{{ route('admin.barang.destroy', $barang->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus barang ini?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">

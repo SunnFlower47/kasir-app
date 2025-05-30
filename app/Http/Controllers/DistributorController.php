@@ -9,12 +9,12 @@ class DistributorController extends Controller
     public function index()
     {
         $distributors = Distributor::all();
-        return view('distributor.index', compact('distributors'));
+        return view('admin.distributor.index', compact('distributors'));
     }
 
     public function create()
     {
-        return view('distributor.create');
+        return view('admin.distributor.create');
     }
 
     public function store(Request $request)
@@ -28,7 +28,7 @@ class DistributorController extends Controller
 
         Distributor::create($validated);
 
-        return redirect()->route('distributor.index')->with('success', 'Distributor berhasil ditambahkan.');
+        return redirect()->route('admin.distributor.index')->with('success', 'Distributor berhasil ditambahkan.');
     }
 
     public function edit(Distributor $distributor)
@@ -47,13 +47,13 @@ class DistributorController extends Controller
 
         $distributor->update($validated);
 
-        return redirect()->route('distributor.index')->with('success', 'Distributor berhasil diperbarui.');
+        return redirect()->route('admin.distributor.index')->with('success', 'Distributor berhasil diperbarui.');
     }
 
     public function destroy(Distributor $distributor)
     {
         $distributor->delete();
 
-        return redirect()->route('distributor.index')->with('success', 'Distributor berhasil dihapus.');
+        return redirect()->route('admin.distributor.index')->with('success', 'Distributor berhasil dihapus.');
     }
 }

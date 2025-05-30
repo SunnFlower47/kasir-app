@@ -9,8 +9,9 @@ class Distributor extends Model
     protected $fillable = ['nama', 'alamat', 'telepon', 'email'];
 
     public function barangs()
-    {
-        return $this->hasMany(Barang::class, 'id_distributor');
-    }
+{
+    return $this->hasMany(Barang::class, 'id_distributor');
+}
+
 }
 

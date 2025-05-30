@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProfileController extends Controller
 {
@@ -24,18 +26,34 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+   public function update(ProfileUpdateRequest $request): RedirectResponse
+{
+    $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+    // Isi data dari validasi (name, email, dll)
+    $user->fill($request->validated());
+
+    // Cek jika ada file foto di request
+    if ($request->hasFile('photo')) {
+        // Hapus foto lama jika ada (optional)
+        if ($user->photo) {
+            Storage::disk('public')->delete($user->photo);
         }
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        // Simpan file baru di storage/app/public/profile-photos
+        $path = $request->file('photo')->store('profile-photos', 'public');
+        $user->photo = $path;
     }
+
+    // Reset verifikasi email jika email diubah
+    if ($user->isDirty('email')) {
+        $user->email_verified_at = null;
+    }
+
+    $user->save();
+
+    return Redirect::route('profile.edit')->with('status', 'profile-updated');
+}
 
     /**
      * Delete the user's account.

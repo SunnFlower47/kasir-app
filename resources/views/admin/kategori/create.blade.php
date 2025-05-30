@@ -4,7 +4,7 @@
 
 @section('content')
     <h1>Tambah Kategori</h1>
-    <form action="{{ route('kategori.store') }}" method="POST">
+    <form action="{{ route('admin.kategori.store') }}" method="POST">
         @csrf
         <div>
             <label for="nama">Nama Kategori</label>

@@ -13,7 +13,7 @@ class KategoriController extends Controller
     public function index()
     {
         $kategoris = Kategori::all();  // Ambil semua kategori
-        return view('kategori.index', compact('kategoris'));  // Kirim ke view
+        return view('admin.kategori.index', compact('kategoris'));  // Kirim ke view
     }
 
     /**
@@ -21,7 +21,7 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        return view('kategori.create');  // Tampilkan form create
+        return view('admin.kategori.create');  // Tampilkan form create
     }
 
     /**
@@ -38,7 +38,7 @@ class KategoriController extends Controller
             'nama' => $request->nama,
         ]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
+        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
     /**
@@ -47,7 +47,7 @@ class KategoriController extends Controller
     public function show($id)
     {
         $kategori = Kategori::findOrFail($id);
-        return view('kategori.show', compact('kategori'));
+        return view('admin.kategori.show', compact('kategori'));
     }
 
     /**
@@ -56,7 +56,7 @@ class KategoriController extends Controller
     public function edit($id)
     {
         $kategori = Kategori::findOrFail($id);
-        return view('kategori.edit', compact('kategori'));
+        return view('admin.kategori.edit', compact('kategori'));
     }
 
     /**
@@ -73,7 +73,7 @@ class KategoriController extends Controller
             'nama' => $request->nama,
         ]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui!');
+        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui!');
     }
 
     /**
@@ -84,6 +84,6 @@ class KategoriController extends Controller
         $kategori = Kategori::findOrFail($id);
         $kategori->delete();
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus!');
+        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }

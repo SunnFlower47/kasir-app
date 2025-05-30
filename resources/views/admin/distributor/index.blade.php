@@ -6,7 +6,7 @@
     <div class="container">
         <h1 class="mb-4">Daftar Distributor</h1>
 
-        <a href="{{ route('distributor.create') }}" class="btn btn-success mb-3">Tambah Distributor</a>
+        <a href="{{ route('admin.distributor.create') }}" class="btn btn-success mb-3">Tambah Distributor</a>
 
         <table class="table table-bordered">
             <thead>
@@ -26,8 +26,8 @@
                         <td>{{ $distributor->telepon }}</td>
                         <td>{{ $distributor->email }}</td>
                         <td>
-                            <a href="{{ route('distributor.edit', $distributor->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('distributor.destroy', $distributor->id) }}" method="POST" style="display:inline;">
+                            <a href="{{ route('admin.distributor.edit', $distributor->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('admin.distributor.destroy', $distributor->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm"

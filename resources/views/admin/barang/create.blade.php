@@ -11,18 +11,12 @@
                     <h6 class="m-0 font-weight-bold text-primary">Tambah Barang Baru</h6>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('barang.store') }}" method="POST">
+                    <form action="{{ route('admin.barang.store') }}" method="POST">
                         @csrf
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="kode_barang" class="font-weight-bold">Kode Barang <span class="text-danger">*</span></label>
-                                    <input type="text" name="kode_barang" class="form-control @error('kode_barang') is-invalid @enderror" value="{{ old('kode_barang') }}" required>
-                                    @error('kode_barang')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+
 
                                 <div class="form-group">
                                     <label for="nama" class="font-weight-bold">Nama Barang <span class="text-danger">*</span></label>
@@ -136,7 +130,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Simpan
                             </button>
-                            <a href="{{ route('barang.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('admin.barang.index') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left"></i> Kembali
                             </a>
                         </div>

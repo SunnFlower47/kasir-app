@@ -6,7 +6,7 @@
     <div class="container">
         <h1 class="mb-4">Tambah Distributor</h1>
 
-        <form action="{{ route('distributor.store') }}" method="POST">
+        <form action="{{ route('admin.distributor.store') }}" method="POST">
             @csrf
 
             <div class="mb-3">
@@ -30,7 +30,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Simpan</button>
-            <a href="{{ route('distributor.index') }}" class="btn btn-secondary">Batal</a>
+            <a href="{{ route('admin.distributor.index') }}" class="btn btn-secondary">Batal</a>
         </form>
     </div>
 @endsection

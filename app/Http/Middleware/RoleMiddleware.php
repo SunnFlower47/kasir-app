@@ -9,12 +9,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  $role
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (Auth::check() && Auth::user()->role === $role) {
+
+        if (Auth::check() && in_array(Auth::user()->role, explode('|', $role))) {
             return $next($request);
         }
 
+        // If not, deny access
         abort(403, 'Akses ditolak.');
     }
 }
