@@ -43,6 +43,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('/kasir');
+        return redirect()->intended('/dashboard')
+            ->with('success', 'Akun berhasil dibuat. Selamat datang!');
     }
 }

@@ -152,7 +152,7 @@
             <li class="nav-item dropdown user-menu">
                 <a href={{ route('profile.edit') }} class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <img
-                        src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('default-avatar.png') }}"
+                        src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('../../../dist/assets/img/profile-default.jpg') }}"
                         class="user-image rounded-circle shadow"
                         alt="User Image"/>
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
@@ -161,7 +161,7 @@
                     <!-- User Image -->
                     <li class="user-header text-bg-primary">
                         <img
-                            src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('default-avatar.png') }}"
+                            src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('../../../dist/assets/img/profile-default.jpg') }}"
                             class="rounded-circle shadow"
                             alt="User Image"
                             />

@@ -7,6 +7,7 @@ use App\Models\Kategori;
 use App\Models\Distributor;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -38,6 +39,9 @@ class AdminController extends Controller
         ->latest()
         ->take(5)
         ->get();
+    // Total users
+    $totalUser = User::count();
+    $latestUsers = User::latest()->take(5)->get();
 
     // Chart data — masih placeholder (nanti ubah ke grafik penjualan)
     $chartData = Kategori::withCount(['barangs as total_stok' => function($query) {
@@ -59,7 +63,9 @@ class AdminController extends Controller
         'chartData' => $chartValues,
         'expiringSoon' => $expiringSoon,
         'newThisWeek' => $newThisWeek,
-        'expiredItems' => $expiredItems,  // Tambahkan expired items
+        'expiredItems' => $expiredItems,
+        'totalUser' => $totalUser,
+        'latestUsers' => $latestUsers,
     ]);
 }
 

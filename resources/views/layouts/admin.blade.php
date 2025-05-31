@@ -60,10 +60,10 @@
         <!--begin::App Wrapper-->
         <div class="app-wrapper">
             <!--begin::Header-->
-            @include('layouts.partialsadm.navadm')
+            @include('layouts.partials.navadm')
             <!--end::Header-->
             <!--begin::Sidebar-->
-            @include('layouts.partialsadm.sidebaradm')
+            @include('layouts.partials.sidebaradm')
             <!--end::Sidebar-->
             <!--begin::App Main-->
             <main class="app-main">

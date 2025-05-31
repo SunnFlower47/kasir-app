@@ -56,7 +56,7 @@
                     <p>Distributor</p>
                     </a>
                 </li>
-              <li class="nav-item"></li>
+              <li class="nav-item">
                 <a href="{{ route('admin.kategori.index') }}" class="nav-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-tags"></i>
                   <p>Kategori</p>

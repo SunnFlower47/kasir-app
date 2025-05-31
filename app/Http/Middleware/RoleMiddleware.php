@@ -18,13 +18,18 @@ class RoleMiddleware
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next, string $role): Response
-    {
-
-        if (Auth::check() && in_array(Auth::user()->role, explode('|', $role))) {
-            return $next($request);
-        }
-
-        // If not, deny access
-        abort(403, 'Akses ditolak.');
+{
+    if (!Auth::check()) {
+        return redirect()->route('login'); // pastikan user login dulu
     }
+
+    $roles = explode('|', $role);
+
+    if (in_array(Auth::user()->role, $roles)) {
+        return $next($request);
+    }
+
+    abort(403, 'Akses ditolak.');
+}
+
 }

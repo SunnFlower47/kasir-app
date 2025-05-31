@@ -28,7 +28,6 @@
         <thead>
             <tr>
                 <th width="5%">No</th>
-                <th width="10%">Kode</th>
                 <th width="10%">Barcode</th>
                 <th width="15%">Nama Barang</th>
                 <th width="10%">Kategori</th>
@@ -44,7 +43,6 @@
             @foreach($barang as $key => $item)
             <tr>
                 <td class="text-center">{{ $loop->iteration }}</td>
-                <td>{{ $item->kode_barang }}</td>
                 <td>{{ $item->barcode ?? '-' }}</td>
                 <td>{{ $item->nama }}</td>
                 <td>{{ $item->kategori->nama ?? '-' }}</td>

@@ -37,14 +37,21 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.role');
 
+
     // Tambahkan route khusus untuk barang
     Route::get('barang/stock-alert', [BarangController::class, 'stockAlert'])->name('barang.stock-alert');
     Route::get('barang/export/{format}', [BarangController::class, 'export'])->name('barang.export');
+
 });
 
 // Routes kasir (middleware auth dan role kasir)
-Route::middleware(['auth', 'role:kasir'])->get('/kasir', [KasirController::class, 'index'])->name('kasir.dashboard');
+Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->group(function () {
+    Route::get('/', [KasirController::class, 'index'])->name('dashboard');
+    // Route lain khusus kasir bisa ditambahkan di sini
+});
+
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
 
 
 require __DIR__.'/auth.php';
