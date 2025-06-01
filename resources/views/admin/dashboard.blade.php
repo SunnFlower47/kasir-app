@@ -52,7 +52,7 @@
                 </div>
             </a>
         </div>
-
+@canSee(['superadmin'])
         <div class="col-md-3">
             <a href="{{ route('admin.users.index') }}" class="text-decoration-none">
                 <div class="card border-0 shadow-sm rounded-4 bg-info text-white h-100">
@@ -67,6 +67,7 @@
                 </div>
             </a>
         </div>
+@endcanSee
     </div>
 </div>
 @endsection

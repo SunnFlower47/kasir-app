@@ -11,7 +11,7 @@
         <h1 class="h3 mb-0 text-gray-800">Daftar Barang</h1>
 
         <div class="d-flex">
-            {{-- Pencarian --}}
+            {{-- Pencarian
             <form action="{{ route('admin.barang.index') }}" method="GET" class="form-inline me-3">
                 <div class="input-group">
                     <input type="text" name="search" class="form-control" placeholder="Cari barang..." value="{{ request('search') }}">
@@ -19,7 +19,7 @@
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-            </form>
+            </form> --}}
 
             {{-- Export --}}
             <div class="dropdown">
@@ -66,7 +66,7 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>No</th>
-                            <th>Kode Barang</th>
+                            <th>barcode</th>
                             <th>Nama Barang</th>
                             <th>Harga</th>
                             <th>Stok</th>
@@ -80,10 +80,7 @@
                         <tr>
                             <td>{{ $barangs->firstItem() + $index }}</td>
                             <td>
-                                <span class="text-primary">{{ $barang->kode_barang }}</span>
-                                @if($barang->barcode)
-                                    <div><small class="text-muted">{{ $barang->barcode }}</small></div>
-                                @endif
+                                <span class="text-primary">{{ $barang->barcode }}</span>
                             </td>
                             <td>{{ $barang->nama }}</td>
                             <td>
@@ -91,7 +88,7 @@
                                 <div>Jual: <span class="text-success">Rp {{ number_format($barang->harga_jual, 0, ',', '.') }}</span></div>
                             </td>
                             <td class="text-center">
-                                <span class="badge {{ $barang->stok > 20 ? 'bg-success' : ($barang->stok > 5 ? 'bg-warning' : 'bg-danger') }}">
+                                <span class="badge {{ $barang->stok > 10 ? 'bg-success' : ($barang->stok > 5 ? 'bg-warning ' : 'bg-danger') }}">
                                     {{ $barang->stok }} {{ $barang->satuan }}
                                 </span>
                             </td>
@@ -107,11 +104,11 @@
                                         $tooltip = 'Kadaluarsa dalam ' . $daysDiff . ' hari';
 
                                         if ($daysDiff < 0) {
-                                            $class = 'text-danger fw-bold';
+                                            $class = 'text-danger';
                                             $badge = '<span class="badge bg-danger ms-1">Expired</span>';
                                             $tooltip = 'Kadaluarsa ' . abs($daysDiff) . ' hari lalu';
                                         } elseif ($daysDiff <= 30) {
-                                            $class = 'text-warning fw-bold';
+                                            $class = 'text-warning';
                                             $badge = '<span class="badge bg-warning text-dark ms-1">Akan Exp</span>';
                                         }
                                     @endphp
@@ -142,7 +139,7 @@
                             </td>
                         </tr>
                         @empty
-                        <tr>
+                        {{-- <tr>
                             <td colspan="8" class="text-center py-4">
                                 @if(request('search'))
                                     <h4 class="text-muted">Tidak ditemukan hasil untuk "{{ request('search') }}"</h4>
@@ -156,14 +153,13 @@
                                     </a>
                                 @endif
                             </td>
-                        </tr>
+                        </tr> --}}
                         @endforelse
                     </tbody>
                 </table>
             </div>
-
             {{-- Pagination --}}
-            @if($barangs->hasPages())
+            {{-- @if($barangs->hasPages())
             <div class="mt-3 d-flex justify-content-between align-items-center flex-wrap">
                 <div class="text-muted mb-2 mb-md-0">
                     Menampilkan <strong>{{ $barangs->firstItem() }}</strong> - <strong>{{ $barangs->lastItem() }}</strong> dari <strong>{{ $barangs->total() }}</strong> data
@@ -172,18 +168,17 @@
                     {{ $barangs->links('pagination::bootstrap-4') }}
                 </nav>
             </div>
-            @endif
+            @endif --}}
         </div>
     </div>
 </div>
 @endsection
 
 @push('styles')
-<link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 <style>
     .table td, .table th { vertical-align: middle; }
     .badge { font-size: 0.85em; padding: 0.35em 0.65em; }
-    .pagination { margin-bottom: 0; }
+    /* .pagination { margin-bottom: 0; }
     .pagination .page-item.active .page-link {
         background-color: #4e73df;
         border-color: #4e73df;
@@ -193,18 +188,21 @@
     }
     .pagination .page-item.disabled .page-link {
         color: #6c757d;
+    } */
+    .swal2-container {
+        z-index: 99999 !important;
     }
     .swal2-container {
-  z-index: 99999 !important;
-}
+        z-index: 99999 !important;
+    }
 
-.swal2-popup {
-  font-size: 1.4rem !important;
-}
+    .swal2-popup {
+        font-size: 1.4rem !important;
+    }
 
-.swal2-toast {
-  font-size: 1.2rem !important;
-}
+    .swal2-toast {
+        font-size: 1.2rem !important;
+    }
 </style>
 
 @endpush
@@ -212,7 +210,25 @@
 @push('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
+    // Inisialisasi DataTables
+    $('#dataTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "lengthChange": true,
+        "pageLength": 10,
+        "language": {
+            "emptyTable": "Tidak ada data tersedia",
+            "info": "Menampilkan _START_ hingga _END_ dari _TOTAL_ data",
+            "infoEmpty": "Menampilkan 0 hingga 0 dari 0 data",
+            "lengthMenu": "Tampilkan _MENU_ data per halaman",
+            "search": "Cari:",
+            "zeroRecords": "Tidak ditemukan data yang sesuai"
+        }
+    });
+
     // Tooltip Bootstrap
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
@@ -245,27 +261,25 @@ document.addEventListener('DOMContentLoaded', function() {
     @endif
 
     // Konfirmasi hapus
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('btn-delete')) {
-            e.preventDefault();
-            const form = e.target.closest('form');
-            const itemName = e.target.getAttribute('data-name');
+    $(document).on('click', '.btn-delete', function(e) {
+        e.preventDefault();
+        const form = $(this).closest('form');
+        const itemName = $(this).data('name');
 
-            Swal.fire({
-                title: 'Yakin ingin menghapus?',
-                text: `Data "${itemName}" akan dihapus permanen!`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: `Data "${itemName}" akan dihapus permanen!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
     });
 });
 </script>

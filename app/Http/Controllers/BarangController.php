@@ -10,41 +10,45 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BarangExport;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+use Yajra\DataTables\Facades\DataTables;
+
 class BarangController extends Controller
 {
     public function index(Request $request)
-    {
-        $query = Barang::with(['kategori', 'distributor']);
+{
+    $query = Barang::with(['kategori', 'distributor']);
 
-        if ($request->has('search') && $request->search != '') {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('barcode', 'like', "%{$search}%");
-            });
-        }
+    if ($request->has('search') && $request->search != '') {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('nama', 'like', "%{$search}%")
+              ->orWhere('barcode', 'like', "%{$search}%");
 
-        if ($request->has('filter')) {
-            switch ($request->filter) {
-                case 'stok_rendah':
-                    $query->where('stok', '<', 10);
-                    break;
-                case 'akan_expired':
-                    $query->whereNotNull('expired_at')
-                          ->whereDate('expired_at', '>', now())
-                          ->whereDate('expired_at', '<=', now()->addDays(30));
-                    break;
-                case 'sudah_expired':
-                    $query->whereNotNull('expired_at')
-                          ->whereDate('expired_at', '<', now());
-                    break;
-            }
-        }
-
-        $barangs = $query->orderBy('nama')->paginate(9);
-
-        return view('admin.barang.index', compact('barangs'));
+        });
     }
+
+    if ($request->has('filter')) {
+        switch ($request->filter) {
+            case 'stok_rendah':
+                $query->where('stok', '<', 10);
+                break;
+            case 'akan_expired':
+                $query->whereNotNull('expired_at')
+                      ->whereDate('expired_at', '>', now())
+                      ->whereDate('expired_at', '<=', now()->addDays(30));
+                break;
+            case 'sudah_expired':
+                $query->whereNotNull('expired_at')
+                      ->whereDate('expired_at', '<', now());
+                break;
+        }
+    }
+
+    $barangs = $query->orderBy('nama')->paginate(9);
+
+    return view('admin.barang.index', compact('barangs'));
+}
+
 
     public function create()
     {
@@ -164,4 +168,7 @@ class BarangController extends Controller
 
         return view('admin.barang.stock_alert', compact('barangs', 'threshold'));
     }
+
+
+
 }
