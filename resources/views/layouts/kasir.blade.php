@@ -49,7 +49,7 @@
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
         <!--end::DataTables CSS-->
-
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('style')
         <style>
             .content-wrapper {
@@ -63,10 +63,10 @@
         <!--begin::App Wrapper-->
         <div class="app-wrapper">
             <!--begin::Header-->
-            @include('layouts.partials.navadm')
+            @include('layouts.partials.navkasir')
             <!--end::Header-->
             <!--begin::Sidebar-->
-            @include('layouts.partials.sidebaradm')
+
             <!--end::Sidebar-->
             <!--begin::App Main-->
             <main class="app-main">

@@ -169,6 +169,11 @@ class BarangController extends Controller
         return view('admin.barang.stock_alert', compact('barangs', 'threshold'));
     }
 
+public function getProdukApi()
+{
+    $produks = Barang::select('id', 'nama', 'stok', 'satuan', 'harga_jual')->orderBy('nama')->get();
+    return response()->json($produks);
+}
 
 
 }

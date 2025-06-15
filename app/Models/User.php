@@ -13,6 +13,8 @@ use Illuminate\Notifications\Notifiable;
  * @property string $email
  * @property string $password
  * @property string $role
+ * @property string|null $photo
+ * @property \Illuminate\Support\Carbon $created_at
  */
 class User extends Authenticatable
 {

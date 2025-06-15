@@ -42,6 +42,18 @@
                       <p>Dashboard admin</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a href="{{ route('kasir.dashboard') }}" class="nav-link {{ request()->routeIs('kasir.dashboard') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Dashboard kasir</p>
+                    </a>
+                    </li>
+                  <li class="nav-item">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Dashboard</p>
+                    </a>
+                  </li>
                 </ul>
               </li>
               <li class="nav-item">

@@ -18,6 +18,7 @@
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Role</th>
+
                             <th>Tanggal Daftar</th>
                             <th>Aksi</th>
                         </tr>
@@ -57,5 +58,82 @@
         </div>
     </div>
 </div>
-@endsection
 
+@endsection
+@push('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+$(document).ready(function() {
+    // Inisialisasi DataTables
+    $('#dataTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "lengthChange": true,
+        "pageLength": 10,
+        "language": {
+            "emptyTable": "Tidak ada data tersedia",
+            "info": "Menampilkan _START_ hingga _END_ dari _TOTAL_ data",
+            "infoEmpty": "Menampilkan 0 hingga 0 dari 0 data",
+            "lengthMenu": "Tampilkan _MENU_ data per halaman",
+            "search": "Cari:",
+            "zeroRecords": "Tidak ditemukan data yang sesuai"
+        }
+    });
+
+    // Tooltip Bootstrap
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Notifikasi session
+    @if(session('success'))
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: {!! json_encode(session('success')) !!},
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+    @endif
+
+    @if(session('error'))
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: {!! json_encode(session('error')) !!},
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+    @endif
+
+    // Konfirmasi hapus
+    $(document).on('click', '.btn-delete', function(e) {
+        e.preventDefault();
+        const form = $(this).closest('form');
+        const itemName = $(this).data('name');
+
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: `Data "${itemName}" akan dihapus permanen!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+});
+</script>
+@endpush

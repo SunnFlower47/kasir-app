@@ -8,7 +8,8 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\simpanTransaksiController;
 
 // Route halaman utama
 Route::get('/', function () {
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
 
 // Routes admin (middleware auth dan role admin)
@@ -47,8 +49,10 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('admin')->name('admin.')-
     Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.role');
 });
 // Routes kasir (middleware auth dan role kasir)
-Route::middleware(['auth', 'role:kasir|admin'])->prefix('kasir')->name('kasir.')->group(function () {
+Route::middleware(['auth', 'role:kasir|admin|superadmin'])->prefix('kasir')->name('kasir.')->group(function () {
     Route::get('/', [KasirController::class, 'index'])->name('dashboard');
+    Route::post('/simpan-transaksi', [KasirController::class, 'simpanTransaksi'])->name('simpanTransaksi');
+    Route::get('/api/produk', [BarangController::class, 'getProdukApi'])->name('api.produk');
 });
 
 
