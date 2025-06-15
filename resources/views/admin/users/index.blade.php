@@ -37,7 +37,7 @@
                                     <span class="badge badge-danger">Role tidak ditemukan</span>
                                 @endif
                             </td>
-                            <td>{{ $user->created_at->format('d/m/Y') }}</td>
+                            <td>{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</td>
                             <td>
                                 <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-edit"></i>
